@@ -1,0 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class FloatingTextController : MonoBehaviour
+{
+    public Camera playerCamera;  // Reference to the player camera
+    public GameObject textObject; // Reference to the text object (can be a child of the canvas)
+
+    private void Update()
+    {
+        if (playerCamera != null && textObject != null)
+        {
+            Vector3 direction = textObject.transform.position - playerCamera.transform.position;
+            direction.y = 0; 
+            textObject.transform.rotation = Quaternion.LookRotation(-direction); // Flip the direction vector
+        }
+    }
+}
