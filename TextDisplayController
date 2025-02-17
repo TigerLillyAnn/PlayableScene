@@ -1,0 +1,58 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TextDisplayController : MonoBehaviour
+{
+    public GameObject textObject;   // Reference to the Text (Vajra) object
+    public GameObject player;       // Reference to the Player (Capsule or Character Controller)
+    
+    public float textDuration = 3f; // Duration to keep the text visible after player enters
+    private float timer = 0f;       // Timer to track the text duration
+    private bool isPlayerInZone = false;  // Flag to check if the player is inside the zone
+
+    private void Start()
+    {
+        // Initially hide the text
+        textObject.SetActive(false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Debug log to check if the player entered the zone
+        if (other.gameObject == player)
+        {
+            Debug.Log("Player entered the Vajra-zone");
+            textObject.SetActive(true);  // Show the text
+            timer = textDuration;        // Start the timer
+            isPlayerInZone = true;       // Set flag to true
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        // Debug log to check if the player exited the zone
+        if (other.gameObject == player)
+        {
+            Debug.Log("Player exited the Vajra-zone");
+            isPlayerInZone = false;
+        }
+    }
+
+    private void Update()
+    {
+        // If the player is in the zone, countdown the timer
+        if (isPlayerInZone && timer > 0)
+        {
+            timer -= Time.deltaTime;  // Countdown the timer
+        }
+
+        // If the timer has finished and the player is not in the zone, hide the text
+        if (timer <= 0 && !isPlayerInZone)
+        {
+            textObject.SetActive(false);  // Hide the text after the timer ends
+        }
+    }
+}
+
+
